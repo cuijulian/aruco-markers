@@ -206,8 +206,23 @@ int main(int argc, char *argv[]) {
         videoInput = video;
         opened = inputVideo.open(video);
     } else {
-        videoInput = camId;
-        opened = inputVideo.open(camId);
+       /* Setting parameters for the camera for calibration.
+          It's important to note that the resolution parameters for the camera
+          must be the same as for cube or pose estimation in order to get correct
+          Results. If the resolution during calibration is not the same, the
+          Z distance measurement gets really messy!
+          Currently I'm using a width of 600 and a height of 800. I found that
+          this value gives a good frame rate ~= 60fps and is wide enough for
+          detection. It's also good enough to detect up to 4 meters in Z. There's
+          also minimal cutting of detection while moving from one orientation to
+          another!
+       */
+
+       videoInput = camId;
+       opened = inputVideo.open(camId);
+
+       inputVideo.set(3, 800); //Set width
+       inputVideo.set(4, 600); //Set Height
     }
 
     if (!opened) {
